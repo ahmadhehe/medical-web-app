@@ -25,10 +25,24 @@ Key Features: Registration, Authentication, AI NLP Integration, Patient Profile 
 
 -------------------------------------------
 WORKFLOW 2: Doctor's Daily Schedule & Patient Review
-Contributor: [Member 1 Name]
+Contributor: Ahmad Murtaza
 -------------------------------------------
-[To be filled by Member 1]
+Purpose: Demonstrates role-based dashboards + data access control
+Step-by-step:
 
+1. Doctor logs into the system
+2. System displays role-specific dashboard with today's schedule
+3. Doctor views list of scheduled appointments with patient names and time slots
+4. Doctor selects a patient from the schedule
+5. System displays patient's medical history, allergies, and AI pre-screening results
+6. Doctor reviews AI-generated preliminary assessment
+7. Doctor can view any uploaded medical images (X-rays) with AI flagged anomalies
+8. Doctor adds consultation notes to patient record
+9. Doctor updates appointment status (completed/rescheduled/cancelled)
+10. System logs all actions in audit trail
+11. Real-time notification sent to patient about appointment status update
+
+Key Features: RBAC, Doctor Dashboard, Audit Logging, Real-time Notifications, Medical Records Access
 
 -------------------------------------------
 WORKFLOW 3: Admin User Management & System Monitoring

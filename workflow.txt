@@ -1,0 +1,23 @@
+===========================================
+MEDICAL MANAGEMENT PLATFORM - WORKFLOWS
+===========================================
+
+-------------------------------------------
+WORKFLOW 1: Patient Registration & AI Pre-Screening
+Contributor: [Member 1 Name]
+-------------------------------------------
+[To be filled by Member 1]
+
+
+-------------------------------------------
+WORKFLOW 2: Doctor's Daily Schedule & Patient Review
+Contributor: [Member 1 Name]
+-------------------------------------------
+[To be filled by Member 1]
+
+
+-------------------------------------------
+WORKFLOW 3: Admin User Management & System Monitoring
+Contributor: [Member 2 Name]
+-------------------------------------------
+[To be filled by Member 2]

@@ -46,22 +46,22 @@ Key Features: RBAC, Doctor Dashboard, Audit Logging, Real-time Notifications, Me
 
 -------------------------------------------
 WORKFLOW 3: Admin User Management & System Monitoring
-Contributor: [Fizza Zehra]
+Contributor: Fizza Zehra
 -------------------------------------------
 Purpose: Demonstrates administrative controls + audit system
 Step-by-step:
 
-Admin logs into the system with admin credentials
-System displays admin dashboard with system statistics (total users, active appointments, recent alerts)
-Admin navigates to User Management section
-Admin views paginated list of all users with filters (role, status, registration date)
-Admin searches for a specific user by email or name
-Admin selects a user to view detailed profile
-Admin can activate/deactivate user account or reset password
-Admin navigates to Audit Logs section
-Admin filters audit logs by user, date range, and action type (create/update/delete)
-System displays detailed log entries showing who did what and when
-Admin can export audit logs for compliance reporting
-Real-time dashboard updates show new user registrations as they happen
+1. Admin logs into the system with admin credentials
+2. System displays admin dashboard with system statistics (total users, active appointments, recent alerts)
+3. Admin navigates to User Management section
+4. Admin views paginated list of all users with filters (role, status, registration date)
+5. Admin searches for a specific user by email or name
+6. Admin selects a user to view detailed profile
+7. Admin can activate/deactivate user account or reset password
+8. Admin navigates to Audit Logs section
+9. Admin filters audit logs by user, date range, and action type (create/update/delete)
+10. System displays detailed log entries showing who did what and when
+11. Admin can export audit logs for compliance reporting
+12. Real-time dashboard updates show new user registrations as they happen
 
 Key Features: Admin Dashboard, User Management, Audit Logging, Real-time Updates, Search & Filtering

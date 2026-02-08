@@ -4,10 +4,24 @@ MEDICAL MANAGEMENT PLATFORM - WORKFLOWS
 
 -------------------------------------------
 WORKFLOW 1: Patient Registration & AI Pre-Screening
-Contributor: [Member 1 Name]
+Contributor: Ahmad Murtaza
 -------------------------------------------
-[To be filled by Member 1]
+Purpose: Demonstrates user onboarding + AI integration
+Step-by-step:
 
+1. Patient navigates to registration page
+2. Selects "Patient" role and fills registration form (name, email, password, DOB, gender)
+3. System validates input and creates account
+4. Patient logs in with credentials
+5. System prompts to complete medical profile (blood type, allergies, medical history)
+6. Patient initiates AI pre-screening for appointment
+7. AI chatbot (Gemini) asks screening questions based on symptoms
+8. Patient provides responses to symptom questions
+9. AI generates preliminary assessment and urgency level
+10. System suggests appropriate doctor specialization and appointment priority
+11. Patient receives confirmation and can proceed to book appointment
+
+Key Features: Registration, Authentication, AI NLP Integration, Patient Profile Management
 
 -------------------------------------------
 WORKFLOW 2: Doctor's Daily Schedule & Patient Review

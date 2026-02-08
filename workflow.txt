@@ -18,6 +18,22 @@ Contributor: [Member 1 Name]
 
 -------------------------------------------
 WORKFLOW 3: Admin User Management & System Monitoring
-Contributor: [Member 2 Name]
+Contributor: [Fizza Zehra]
 -------------------------------------------
-[To be filled by Member 2]
+Purpose: Demonstrates administrative controls + audit system
+Step-by-step:
+
+Admin logs into the system with admin credentials
+System displays admin dashboard with system statistics (total users, active appointments, recent alerts)
+Admin navigates to User Management section
+Admin views paginated list of all users with filters (role, status, registration date)
+Admin searches for a specific user by email or name
+Admin selects a user to view detailed profile
+Admin can activate/deactivate user account or reset password
+Admin navigates to Audit Logs section
+Admin filters audit logs by user, date range, and action type (create/update/delete)
+System displays detailed log entries showing who did what and when
+Admin can export audit logs for compliance reporting
+Real-time dashboard updates show new user registrations as they happen
+
+Key Features: Admin Dashboard, User Management, Audit Logging, Real-time Updates, Search & Filtering

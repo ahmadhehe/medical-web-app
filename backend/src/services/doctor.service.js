@@ -23,6 +23,23 @@ const getProfile = async (userId) => {
   return profile;
 };
 
+const createProfile = async (userId, data) => {
+  const existing = await prisma.doctorProfile.findUnique({ where: { userId } });
+  if (existing) {
+    const error = new Error('Doctor profile already exists. Use PUT to update it.');
+    error.status = 409;
+    throw error;
+  }
+  return prisma.doctorProfile.create({
+    data: {
+      userId,
+      specialization: data.specialization,
+      licenseNumber:  data.licenseNumber,
+    },
+    include: { user: { select: { id: true, fullName: true, email: true, phone: true } } },
+  });
+};
+
 const updateProfile = async (userId, data) => {
   const existing = await prisma.doctorProfile.findUnique({ where: { userId } });
   if (!existing) {
@@ -61,4 +78,4 @@ const getSchedule = async (userId) => {
   });
 };
 
-module.exports = { getAllDoctors, getProfile, updateProfile, getSchedule };
+module.exports = { getAllDoctors, createProfile, getProfile, updateProfile, getSchedule };

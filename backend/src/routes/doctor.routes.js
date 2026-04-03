@@ -9,6 +9,7 @@ const { authorize }    = require('../middleware/role.middleware');
 // GET /api/doctors/:id/schedule   - get today's schedule for a doctor
 
 router.get('/',                authenticate, doctorController.getAllDoctors);
+router.post('/:id/profile',    authenticate, authorize('doctor', 'admin'), doctorController.createProfile);
 router.get('/:id/profile',     authenticate, doctorController.getProfile);
 router.put('/:id/profile',     authenticate, authorize('doctor', 'admin'), doctorController.updateProfile);
 router.get('/:id/schedule',    authenticate, authorize('doctor', 'admin'), doctorController.getSchedule);

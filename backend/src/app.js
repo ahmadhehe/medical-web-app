@@ -13,6 +13,9 @@ const notificationRoutes  = require('./routes/notification.routes');
 const auditRoutes         = require('./routes/audit.routes');
 const medicalImageRoutes  = require('./routes/medicalImage.routes');
 const vitalRoutes         = require('./routes/vital.routes');
+const adminStatsRoutes    = require('./routes/adminStats.routes');
+const systemHealthRoutes  = require('./routes/systemHealth.routes');
+const settingsRoutes      = require('./routes/settings.routes');
 
 const { errorHandler } = require('./middleware/error.middleware');
 
@@ -33,6 +36,9 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/audit-logs',    auditRoutes);
 app.use('/api/medical-images',medicalImageRoutes);
 app.use('/api/vitals',        vitalRoutes);
+app.use('/api/admin',         adminStatsRoutes);
+app.use('/api/system',        systemHealthRoutes);
+app.use('/api/settings',      settingsRoutes);
 
 app.use(errorHandler);
 

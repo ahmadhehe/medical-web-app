@@ -38,4 +38,16 @@ const resetPassword = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
-module.exports = { getAllUsers, getUserById, updateUser, deleteUser, updateUserStatus, resetPassword };
+const getDepartments = async (req, res, next) => {
+  try {
+    res.status(200).json(await userService.getDepartments());
+  } catch (err) { next(err); }
+};
+
+const getUsersByDepartment = async (req, res, next) => {
+  try {
+    res.status(200).json(await userService.getUsersByDepartment(req.params.department, req.query));
+  } catch (err) { next(err); }
+};
+
+module.exports = { getAllUsers, getUserById, updateUser, deleteUser, updateUserStatus, resetPassword, getDepartments, getUsersByDepartment };

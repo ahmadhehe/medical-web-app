@@ -4,16 +4,17 @@ const { createAuditLog } = require('./audit.service');
 
 const SAFE_USER_SELECT = {
   id: true, fullName: true, email: true,
-  phone: true, role: true, status: true,
+  phone: true, role: true, department: true, status: true,
   createdAt: true, updatedAt: true,
 };
 
 const getAllUsers = async (filters = {}) => {
-  const { role, status, search, page = 1, limit = 20 } = filters;
+  const { role, status, department, search, page = 1, limit = 20 } = filters;
 
   const where = {};
-  if (role)   where.role   = role;
-  if (status) where.status = status;
+  if (role)       where.role       = role;
+  if (status)     where.status     = status;
+  if (department) where.department = department;
   if (search) {
     where.OR = [
       { fullName: { contains: search, mode: 'insensitive' } },
@@ -82,4 +83,34 @@ const resetPassword = async (id, newPassword, actorId, ipAddress) => {
   });
 };
 
-module.exports = { getAllUsers, getUserById, updateUser, deleteUser, updateUserStatus, resetPassword };
+const getDepartments = async () => {
+  const results = await prisma.user.groupBy({
+    by: ['department'],
+    where: { department: { not: null } },
+    _count: { id: true },
+  });
+  return results.map((r) => ({ department: r.department, userCount: r._count.id }));
+};
+
+const getUsersByDepartment = async (department, filters = {}) => {
+  const { role, status, page = 1, limit = 20 } = filters;
+
+  const where = { department };
+  if (role)   where.role   = role;
+  if (status) where.status = status;
+
+  const [users, total] = await Promise.all([
+    prisma.user.findMany({
+      where,
+      select: SAFE_USER_SELECT,
+      orderBy: { createdAt: 'desc' },
+      skip: (Number(page) - 1) * Number(limit),
+      take: Number(limit),
+    }),
+    prisma.user.count({ where }),
+  ]);
+
+  return { users, total, page: Number(page), limit: Number(limit) };
+};
+
+module.exports = { getAllUsers, getUserById, updateUser, deleteUser, updateUserStatus, resetPassword, getDepartments, getUsersByDepartment };

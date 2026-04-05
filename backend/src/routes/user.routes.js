@@ -11,6 +11,8 @@ const { authorize }    = require('../middleware/role.middleware');
 // POST   /api/users/:id/reset-password - reset password (admin only)
 
 router.get('/',                   authenticate, authorize('admin'), userController.getAllUsers);
+router.get('/departments',        authenticate, authorize('admin'), userController.getDepartments);
+router.get('/departments/:department', authenticate, authorize('admin'), userController.getUsersByDepartment);
 router.get('/:id',                authenticate, userController.getUserById);
 router.put('/:id',                authenticate, userController.updateUser);
 router.delete('/:id',             authenticate, authorize('admin'), userController.deleteUser);

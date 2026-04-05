@@ -214,17 +214,18 @@ model Vital {
 }
 
 model MedicalImage {
-  id             String       @id @default(uuid())
-  patientId      String
-  patient        User         @relation("PatientImages", fields: [patientId], references: [id])
-  appointmentId  String?
-  appointment    Appointment? @relation(fields: [appointmentId], references: [id])
-  fileName       String
-  storagePath    String
-  mimeType       String
-  uploadedById   String
-  uploadedBy     User         @relation("UploadedBy", fields: [uploadedById], references: [id])
-  uploadedAt     DateTime     @default(now())
+  id                  String       @id @default(uuid())
+  patientId           String
+  patient             User         @relation("PatientImages", fields: [patientId], references: [id])
+  appointmentId       String?
+  appointment         Appointment? @relation(fields: [appointmentId], references: [id])
+  fileName            String
+  storagePath         String
+  annotatedImagePath  String?
+  mimeType            String
+  uploadedById        String
+  uploadedBy          User         @relation("UploadedBy", fields: [uploadedById], references: [id])
+  uploadedAt          DateTime     @default(now())
 
   xrayAiFindings    XrayAiFinding[]
   radiologicalNotes RadiologicalNote[]

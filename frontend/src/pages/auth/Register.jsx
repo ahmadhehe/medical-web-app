@@ -1,5 +1,5 @@
-const Register = () => {
-  return <div>Register page — TODO</div>;
-};
+import Login from './Login';
 
-export default Register;
+export default function Register() {
+  return <Login initialMode="register" />;
+}

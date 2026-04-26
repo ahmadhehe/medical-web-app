@@ -1,6 +1,6 @@
 # Dependencies
 node_modules/
-
+frontend/designs/*
 # Environment variables
 .env
 .env.local

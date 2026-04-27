@@ -107,14 +107,19 @@ export default function AiScreening() {
   const formatTime = (d) => d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
   return (
-    <div className="flex h-full overflow-hidden font-display">
+    <div className="flex h-screen overflow-hidden font-display">
 
       {/* ── Info sidebar ── */}
       <aside className="w-[260px] bg-primary/10 dark:bg-primary/5 border-r border-primary/20 flex flex-col shrink-0">
         <div className="p-5 border-b border-primary/20">
           <div className="flex items-center gap-2 mb-5">
-            <span className="material-symbols-outlined text-primary">medical_services</span>
-            <h2 className="text-primary text-base font-bold tracking-tight">MediConnect AI</h2>
+            <button
+              onClick={() => navigate('/patient/dashboard')}
+              className="flex items-center gap-1.5 text-slate-500 hover:text-primary transition-colors text-xs font-semibold"
+            >
+              <span className="material-symbols-outlined text-[16px]">arrow_back</span>
+              Dashboard
+            </button>
           </div>
           <div className="flex items-center gap-3">
             <div className="bg-primary text-white p-2 rounded-lg">

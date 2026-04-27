@@ -5,7 +5,7 @@ import { useToast } from '../../context/ToastContext';
 import { login as loginApi, register as registerApi } from '../../services/auth.service';
 
 const ROLE_HOME = {
-  patient: '/patient/profile',
+  patient: '/patient/dashboard',
   doctor:  '/doctor/dashboard',
   admin:   '/admin/dashboard',
 };

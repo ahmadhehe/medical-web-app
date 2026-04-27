@@ -1,5 +1,21 @@
 const prisma = require('../lib/prisma');
 
+const BLOOD_TYPE_MAP = {
+  'A+': 'A_POS', 'A-': 'A_NEG',
+  'B+': 'B_POS', 'B-': 'B_NEG',
+  'AB+': 'AB_POS', 'AB-': 'AB_NEG',
+  'O+': 'O_POS', 'O-': 'O_NEG',
+  'unknown': null,
+};
+
+const BLOOD_TYPE_ENUM_VALUES = new Set(['A_POS','A_NEG','B_POS','B_NEG','AB_POS','AB_NEG','O_POS','O_NEG']);
+
+const toBloodTypeEnum = (val) => {
+  if (!val) return null;
+  if (BLOOD_TYPE_ENUM_VALUES.has(val)) return val;
+  return BLOOD_TYPE_MAP[val] ?? null;
+};
+
 const getProfile = async (userId) => {
   const profile = await prisma.patientProfile.findUnique({
     where: { userId },
@@ -23,9 +39,9 @@ const createProfile = async (userId, data) => {
   return prisma.patientProfile.create({
     data: {
       userId,
-      dateOfBirth: new Date(data.dateOfBirth),
-      gender: data.gender,
-      bloodType: data.bloodType,
+      ...(data.dateOfBirth ? { dateOfBirth: new Date(data.dateOfBirth) } : {}),
+      ...(data.gender     ? { gender:      data.gender              } : {}),
+      ...(data.bloodType !== undefined && data.bloodType !== null && { bloodType: toBloodTypeEnum(data.bloodType) }),
       heightCm: data.heightCm,
       weightKg: data.weightKg,
       hasHypertension: data.hasHypertension ?? false,
@@ -50,7 +66,7 @@ const updateProfile = async (userId, data) => {
     data: {
       ...(data.dateOfBirth && { dateOfBirth: new Date(data.dateOfBirth) }),
       ...(data.gender && { gender: data.gender }),
-      ...(data.bloodType !== undefined && { bloodType: data.bloodType }),
+      ...(data.bloodType !== undefined && { bloodType: toBloodTypeEnum(data.bloodType) }),
       ...(data.heightCm !== undefined && { heightCm: data.heightCm }),
       ...(data.weightKg !== undefined && { weightKg: data.weightKg }),
       ...(data.hasHypertension !== undefined && { hasHypertension: data.hasHypertension }),

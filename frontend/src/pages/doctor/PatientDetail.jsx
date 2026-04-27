@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { NavLink, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useToast } from '../../context/ToastContext';
 import { getUserById } from '../../services/user.service';
 import { getProfile as getPatientProfile, getAllergies } from '../../services/patient.service';
@@ -7,14 +7,6 @@ import { getScreeningsByPatient } from '../../services/screening.service';
 import { getAppointments, updateStatus, updateAppointment, addNote } from '../../services/appointment.service';
 import { getImagesByPatient } from '../../services/medicalImage.service';
 import { getPatientVitals } from '../../services/vital.service';
-
-const SIDE_NAV = [
-  { to: '/doctor/dashboard',  icon: 'dashboard',      label: 'Dashboard' },
-  { to: '/doctor/patients',   icon: 'group',          label: 'Patients' },
-  { to: '/doctor/schedule',   icon: 'calendar_month', label: 'My Schedule', active: true },
-  { to: '/doctor/messages',   icon: 'mail',           label: 'Messages' },
-  { to: '/doctor/records',    icon: 'description',    label: 'Reports' },
-];
 
 const URGENCY_BADGE = {
   low:       { label: 'Low Urgency',      cls: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400', icon: 'task_alt' },
@@ -193,50 +185,7 @@ export default function PatientDetail() {
   }
 
   return (
-    <div className="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen font-display">
-      <div className="flex h-screen overflow-hidden">
-        {/* Sidebar */}
-        <aside className="w-64 text-white flex flex-col shrink-0" style={{ backgroundColor: '#102220' }}>
-          <div className="p-6 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-              <span className="material-symbols-outlined text-white">medical_services</span>
-            </div>
-            <div>
-              <h1 className="text-lg font-bold leading-tight">MediConnect</h1>
-              <p className="text-xs text-primary/80 uppercase tracking-wider font-semibold">Medical Portal</p>
-            </div>
-          </div>
-          <nav className="flex-1 px-4 py-4 space-y-1">
-            {SIDE_NAV.map((n) => (
-              <NavLink
-                key={n.to}
-                to={n.to}
-                end
-                className={({ isActive }) =>
-                  'flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ' +
-                  ((isActive || n.active)
-                    ? 'bg-primary text-white'
-                    : 'text-slate-300 hover:bg-white/5')
-                }
-              >
-                <span className="material-symbols-outlined">{n.icon}</span>
-                <span className="text-sm font-medium">{n.label}</span>
-              </NavLink>
-            ))}
-          </nav>
-          <div className="p-4 border-t border-white/10">
-            <button
-              onClick={() => navigate('/doctor/schedule')}
-              className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 transition-all"
-            >
-              <span className="material-symbols-outlined text-sm">add</span>
-              <span>New Appointment</span>
-            </button>
-          </div>
-        </aside>
-
-        {/* Main */}
-        <main className="flex-1 overflow-y-auto">
+    <div className="font-display text-slate-900 dark:text-slate-100">
           {/* Breadcrumbs */}
           <header className="sticky top-0 z-10 backdrop-blur-md px-8 py-4 border-b border-slate-200 dark:border-slate-800" style={{ backgroundColor: 'rgba(246,248,248,0.8)' }}>
             <nav className="flex text-sm font-medium">
@@ -484,8 +433,6 @@ export default function PatientDetail() {
               </div>
             </div>
           </div>
-        </main>
-      </div>
 
       {modalOpen && currentAppointment && (
         <StatusModal

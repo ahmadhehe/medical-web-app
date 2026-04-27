@@ -8,6 +8,7 @@ import Login    from './pages/auth/Login';
 import Register from './pages/auth/Register';
 
 // Patient
+import PatientDashboard from './pages/patient/PatientDashboard';
 import MedicalProfile   from './pages/patient/MedicalProfile';
 import AiScreening      from './pages/patient/AiScreening';
 import ScreeningResults from './pages/patient/ScreeningResults';
@@ -35,13 +36,12 @@ function App() {
         {/* ── Patient ── */}
         <Route element={<ProtectedRoute roles={['patient']} />}>
           <Route element={<DashboardLayout />}>
+            <Route path="/patient/dashboard"         element={<PatientDashboard />} />
             <Route path="/patient/profile"           element={<MedicalProfile />} />
             <Route path="/patient/screening/results" element={<ScreeningResults />} />
           </Route>
-          {/* AiScreening gets the layout frame but manages its own internal height */}
-          <Route element={<DashboardLayout />}>
-            <Route path="/patient/screening" element={<AiScreening />} />
-          </Route>
+          {/* AiScreening is self-contained (full viewport with its own info panel) */}
+          <Route path="/patient/screening" element={<AiScreening />} />
         </Route>
 
         {/* ── Doctor ── */}

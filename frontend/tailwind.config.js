@@ -9,6 +9,7 @@ export default {
         'background-light': '#f8fafc',
         'background-dark': '#102220',
         'slate-sidebar': '#1e293b',
+        'sidebar-teal': '#0F4C45',
       },
       fontFamily: {
         display: ['Inter', 'sans-serif'],

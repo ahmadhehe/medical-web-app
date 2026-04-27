@@ -13,16 +13,20 @@ import AiScreening      from './pages/patient/AiScreening';
 import ScreeningResults from './pages/patient/ScreeningResults';
 
 // Doctor
-import DoctorDashboard from './pages/doctor/DoctorDashboard';
-import PatientDetail   from './pages/doctor/PatientDetail';
-import XRayViewer      from './pages/doctor/XRayViewer';
-import Notifications   from './pages/doctor/Notifications';
+import DoctorDashboard  from './pages/doctor/DoctorDashboard';
+import PatientsList     from './pages/doctor/PatientsList';
+import PatientDetail    from './pages/doctor/PatientDetail';
+import XRayViewer       from './pages/doctor/XRayViewer';
+import Notifications    from './pages/doctor/Notifications';
 
 // Admin
 import AdminDashboard from './pages/admin/AdminDashboard';
 import UserManagement from './pages/admin/UserManagement';
 import UserDetail     from './pages/admin/UserDetail';
 import AuditLogs      from './pages/admin/AuditLogs';
+
+// Shared (audit logs reuses the admin component, role-aware sidebar)
+const DoctorAuditLog = AuditLogs;
 
 function App() {
   return (

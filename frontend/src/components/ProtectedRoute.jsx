@@ -2,7 +2,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const ROLE_HOME = {
-  patient: '/patient/profile',
+  patient: '/patient/dashboard',
   doctor: '/doctor/dashboard',
   admin: '/admin/dashboard',
 };

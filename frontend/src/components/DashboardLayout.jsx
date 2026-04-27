@@ -12,7 +12,8 @@ const NAV_LINKS = {
     { to: '/doctor/notifications',  icon: 'notifications', label: 'Notifications' },
   ],
   patient: [
-    { to: '/patient/profile',   icon: 'person',    label: 'My Profile' },
+    { to: '/patient/dashboard', icon: 'dashboard', label: 'Dashboard'    },
+    { to: '/patient/profile',   icon: 'person',    label: 'My Profile'   },
     { to: '/patient/screening', icon: 'smart_toy', label: 'AI Screening' },
   ],
 };

@@ -1,19 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 import { getSchedule } from '../../services/doctor.service';
 import { getNotifications } from '../../services/notification.service';
-
-const NAV_ITEMS = [
-  { to: '/doctor/dashboard',     icon: 'dashboard',       label: 'Dashboard' },
-  { to: '/doctor/schedule',      icon: 'calendar_today',  label: 'My Schedule' },
-  { to: '/doctor/patients',      icon: 'group',           label: 'Patients' },
-  { to: '/doctor/records',       icon: 'description',     label: 'Medical Records' },
-  { to: '/doctor/notifications', icon: 'notifications',   label: 'Notifications', dot: true },
-  { to: '/doctor/audit-log',     icon: 'history_edu',     label: 'Audit Log' },
-  { to: '/doctor/settings',      icon: 'settings',        label: 'Settings' },
-];
 
 const URGENT_LEVELS = new Set(['high', 'emergency']);
 
@@ -65,7 +55,7 @@ const NOTIF_ICON = {
 };
 
 export default function DoctorDashboard() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const toast    = useToast();
   const navigate = useNavigate();
 
@@ -117,74 +107,12 @@ export default function DoctorDashboard() {
   );
 
   const recentNotifs = notifications.slice(0, 4);
-  const hasUnread    = notifications.some((n) => !n.isRead);
-
-  function handleLogout() {
-    logout();
-    navigate('/login', { replace: true });
-  }
+  const unreadCount  = notifications.filter((n) => !n.isRead).length;
 
   return (
-    <div className="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 flex min-h-screen font-display">
-      {/* Sidebar */}
-      <aside
-        className="w-[220px] fixed h-full flex flex-col justify-between py-6 z-20"
-        style={{ backgroundColor: '#0F4C45' }}
-      >
-        <div>
-          <div className="px-6 mb-8 flex items-center gap-2">
-            <div className="bg-primary rounded-lg p-1">
-              <span className="material-symbols-outlined text-white">medical_services</span>
-            </div>
-            <h1 className="text-white font-bold text-lg tracking-tight">MediConnect</h1>
-          </div>
-          <nav className="flex flex-col gap-1">
-            {NAV_ITEMS.map(({ to, icon, label, dot }) => (
-              <NavLink
-                key={to}
-                to={to}
-                end
-                className={({ isActive }) =>
-                  'flex items-center gap-3 px-6 py-3 transition-colors relative ' +
-                  (isActive
-                    ? 'text-white bg-white/10 border-l-4 border-primary'
-                    : 'text-white/70 hover:text-white hover:bg-white/5')
-                }
-              >
-                <span className="material-symbols-outlined">{icon}</span>
-                <span className="text-sm font-medium">{label}</span>
-                {dot && hasUnread && (
-                  <span className="absolute right-6 top-3.5 w-2 h-2 bg-red-500 rounded-full" />
-                )}
-              </NavLink>
-            ))}
-          </nav>
-        </div>
-
-        <div className="px-4">
-          <div className="flex items-center gap-3 p-2 bg-white/5 rounded-xl border border-white/10">
-            <div className="size-10 rounded-full bg-primary border-2 border-primary flex items-center justify-center text-white font-bold shrink-0">
-              {user?.fullName?.[0]?.toUpperCase() ?? 'D'}
-            </div>
-            <div className="overflow-hidden flex-1 min-w-0">
-              <p className="text-white text-xs font-semibold truncate">{user?.fullName ?? 'Doctor'}</p>
-              <p className="text-white/50 text-[10px] truncate">{user?.department ?? 'Doctor'}</p>
-            </div>
-            <button
-              onClick={handleLogout}
-              title="Sign out"
-              className="text-white/60 hover:text-white p-1 rounded transition-colors"
-            >
-              <span className="material-symbols-outlined text-[18px]">logout</span>
-            </button>
-          </div>
-        </div>
-      </aside>
-
-      {/* Main */}
-      <main className="flex-1 ml-[220px] flex flex-col">
-        {/* Header */}
-        <header className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 sticky top-0 z-10">
+    <div className="flex flex-col font-display text-slate-900 dark:text-slate-100">
+      {/* Header */}
+      <header className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 sticky top-0 z-10">
           <div>
             <h2 className="text-slate-900 dark:text-slate-100 font-bold text-lg">
               {greeting()}, {user?.fullName ? `Dr. ${user.fullName.split(' ').slice(-1)[0]}` : 'Doctor'}
@@ -205,9 +133,9 @@ export default function DoctorDashboard() {
               className="relative p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
             >
               <span className="material-symbols-outlined">notifications</span>
-              {notifications.filter((n) => !n.isRead).length > 0 && (
+              {unreadCount > 0 && (
                 <span className="absolute top-1 right-1 bg-red-500 text-white text-[10px] font-bold px-1 rounded-full min-w-[18px] h-[18px] flex items-center justify-center border-2 border-white dark:border-slate-900">
-                  {notifications.filter((n) => !n.isRead).length}
+                  {unreadCount}
                 </span>
               )}
             </button>
@@ -313,7 +241,6 @@ export default function DoctorDashboard() {
             </div>
           </div>
         </div>
-      </main>
     </div>
   );
 }

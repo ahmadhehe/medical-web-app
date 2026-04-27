@@ -1,24 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 import { getAuditLogs, exportAuditLogs } from '../../services/audit.service';
-
-const ADMIN_NAV = [
-  { to: '/admin/dashboard',   icon: 'dashboard',     label: 'Dashboard' },
-  { to: '/admin/users',       icon: 'group',         label: 'Patients' },
-  { to: '/admin/appointments',icon: 'calendar_today',label: 'Appointments' },
-  { to: '/admin/audit-logs',  icon: 'verified_user', label: 'Audit Log' },
-  { to: '/admin/settings',    icon: 'settings',      label: 'Settings' },
-];
-
-const DOCTOR_NAV = [
-  { to: '/doctor/dashboard',     icon: 'dashboard',      label: 'Dashboard' },
-  { to: '/doctor/schedule',      icon: 'calendar_today', label: 'Appointments' },
-  { to: '/doctor/patients',      icon: 'group',          label: 'Patients' },
-  { to: '/doctor/audit-log',     icon: 'verified_user',  label: 'Audit Log' },
-  { to: '/doctor/settings',      icon: 'settings',       label: 'Settings' },
-];
 
 const ACTION_OPTIONS = [
   { value: '',       label: 'All Actions' },
@@ -51,11 +35,10 @@ function readableTarget(targetType, targetId) {
 }
 
 export default function AuditLogs() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const toast    = useToast();
   const navigate = useNavigate();
   const isDoctor = user?.role === 'doctor';
-  const navItems = isDoctor ? DOCTOR_NAV : ADMIN_NAV;
 
   const [logs, setLogs]       = useState([]);
   const [total, setTotal]     = useState(0);
@@ -131,61 +114,8 @@ export default function AuditLogs() {
     }
   }
 
-  function handleLogout() {
-    logout();
-    navigate('/login', { replace: true });
-  }
-
   return (
-    <div className="bg-background-light dark:bg-background-dark font-display flex min-h-screen">
-      {/* Sidebar */}
-      <aside className="w-64 text-white flex flex-col shrink-0" style={{ backgroundColor: '#083b37' }}>
-        <div className="p-6 flex flex-col gap-8">
-          <div className="flex items-center gap-3">
-            <div className="size-10 rounded-full bg-primary flex items-center justify-center">
-              <span className="material-symbols-outlined text-white">medical_services</span>
-            </div>
-            <div className="flex flex-col">
-              <h1 className="text-lg font-bold leading-none tracking-tight">MediConnect</h1>
-              <p className="text-xs text-primary/70 font-medium">Clinical ERP</p>
-            </div>
-          </div>
-          <nav className="flex flex-col gap-1">
-            {navItems.map(({ to, icon, label }) => (
-              <NavLink
-                key={to}
-                to={to}
-                end
-                className={({ isActive }) =>
-                  'flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ' +
-                  (isActive
-                    ? 'bg-primary text-white shadow-lg'
-                    : 'text-slate-300 hover:bg-white/10')
-                }
-              >
-                <span className="material-symbols-outlined">{icon}</span>
-                <span className="text-sm font-medium">{label}</span>
-              </NavLink>
-            ))}
-          </nav>
-        </div>
-        <div className="mt-auto p-6 flex flex-col gap-1">
-          <button className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/10 transition-colors text-slate-300 text-left">
-            <span className="material-symbols-outlined">help</span>
-            <span className="text-sm font-medium">Support</span>
-          </button>
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/10 transition-colors text-slate-300 text-left"
-          >
-            <span className="material-symbols-outlined">logout</span>
-            <span className="text-sm font-medium">Logout</span>
-          </button>
-        </div>
-      </aside>
-
-      {/* Main */}
-      <main className="flex-1 p-8 overflow-y-auto">
+    <div className="font-display p-8">
         {/* Header */}
         <div className="flex justify-between items-start mb-8">
           <div>
@@ -336,7 +266,6 @@ export default function AuditLogs() {
             Compliance Notice: All logs are immutable, encrypted, and timestamped via MediConnect Secure Ledger.
           </p>
         </div>
-      </main>
     </div>
   );
 }

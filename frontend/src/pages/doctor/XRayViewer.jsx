@@ -57,7 +57,7 @@ export default function XRayViewer() {
     setUploading(true);
     try {
       const form = new FormData();
-      form.append('image', file);
+      form.append('file', file);
       form.append('patientId', patientIdFromQuery);
       const res = await createImage(form);
       toast('X-ray uploaded and analysed', 'success');

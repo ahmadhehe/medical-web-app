@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useToast } from '../../context/ToastContext';
 import {
   getImageById,
+  createImage,
   addRadiologyNote,
   getRadiologyNotes,
 } from '../../services/medicalImage.service';
@@ -28,23 +29,47 @@ function resolveImageUrl(p) {
 }
 
 export default function XRayViewer() {
-  const { imageId } = useParams();
-  const navigate    = useNavigate();
-  const toast       = useToast();
+  const { imageId }        = useParams();
+  const [searchParams]     = useSearchParams();
+  const navigate           = useNavigate();
+  const toast              = useToast();
+  const isNew              = imageId === 'new';
+  const patientIdFromQuery = searchParams.get('patientId');
 
   const [image, setImage]       = useState(null);
   const [notes, setNotes]       = useState([]);
   const [draft, setDraft]       = useState('');
   const [saving, setSaving]     = useState(false);
-  const [loading, setLoading]   = useState(true);
+  const [loading, setLoading]   = useState(!isNew);
   const [zoom, setZoom]         = useState(1);
   const [rotation, setRotation] = useState(0);
   const [contrast, setContrast] = useState(false);
   const [grid, setGrid]         = useState(false);
   const imgRef                  = useRef(null);
 
+  // Upload state (only used in "new" mode)
+  const [file,       setFile]       = useState(null);
+  const [uploading,  setUploading]  = useState(false);
+  const fileInputRef                = useRef(null);
+
+  async function handleUpload() {
+    if (!file || !patientIdFromQuery) return;
+    setUploading(true);
+    try {
+      const form = new FormData();
+      form.append('image', file);
+      form.append('patientId', patientIdFromQuery);
+      const res = await createImage(form);
+      toast('X-ray uploaded and analysed', 'success');
+      navigate(`/doctor/xray/${res.data.id}`, { replace: true });
+    } catch (err) {
+      toast(err.response?.data?.error ?? 'Upload failed', 'error');
+      setUploading(false);
+    }
+  }
+
   useEffect(() => {
-    if (!imageId) return;
+    if (isNew || !imageId) return;
     let alive = true;
     setLoading(true);
     Promise.all([getImageById(imageId), getRadiologyNotes(imageId)])
@@ -92,6 +117,86 @@ export default function XRayViewer() {
     document.body.appendChild(link);
     link.click();
     link.remove();
+  }
+
+  if (isNew) {
+    return (
+      <div className="flex flex-col h-full font-display text-slate-900 dark:text-slate-100 overflow-hidden">
+        <header className="h-16 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark flex items-center justify-between px-6 shrink-0">
+          <h2 className="text-lg font-bold">Upload X-ray</h2>
+          <button
+            onClick={() => navigate(patientIdFromQuery ? `/doctor/patients/${patientIdFromQuery}` : -1)}
+            className="flex items-center gap-2 px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+          >
+            <span className="material-symbols-outlined text-[20px]">arrow_back</span>
+            Back to Patient
+          </button>
+        </header>
+
+        <div className="flex-1 flex items-center justify-center p-8">
+          <div className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-8 space-y-6">
+            <div className="flex items-center gap-3">
+              <div className="p-3 bg-primary/10 rounded-xl">
+                <span className="material-symbols-outlined text-primary text-2xl">radiology</span>
+              </div>
+              <div>
+                <h3 className="font-bold text-lg">Upload X-ray Image</h3>
+                <p className="text-sm text-slate-500">AI will automatically detect anomalies after upload</p>
+              </div>
+            </div>
+
+            <div
+              onClick={() => fileInputRef.current?.click()}
+              className={
+                'border-2 border-dashed rounded-xl p-10 flex flex-col items-center justify-center gap-3 cursor-pointer transition-colors ' +
+                (file
+                  ? 'border-primary/40 bg-primary/5'
+                  : 'border-slate-200 dark:border-slate-700 hover:border-primary/40 hover:bg-primary/5')
+              }
+            >
+              <span className="material-symbols-outlined text-4xl text-slate-400">cloud_upload</span>
+              {file ? (
+                <div className="text-center">
+                  <p className="font-bold text-slate-900 dark:text-slate-100 text-sm">{file.name}</p>
+                  <p className="text-xs text-slate-500 mt-1">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                </div>
+              ) : (
+                <div className="text-center">
+                  <p className="text-sm font-semibold text-slate-600 dark:text-slate-400">Click to select an image</p>
+                  <p className="text-xs text-slate-400 mt-1">JPG, PNG, WEBP — max 10 MB</p>
+                </div>
+              )}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => setFile(e.target.files[0] ?? null)}
+              />
+            </div>
+
+            {file && (
+              <img
+                src={URL.createObjectURL(file)}
+                alt="Preview"
+                className="w-full max-h-48 object-contain rounded-xl border border-slate-200 dark:border-slate-700"
+              />
+            )}
+
+            <button
+              onClick={handleUpload}
+              disabled={!file || uploading}
+              className="w-full py-3 bg-primary text-white font-bold rounded-xl hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-primary/20"
+            >
+              {uploading
+                ? <><span className="material-symbols-outlined animate-spin">progress_activity</span> Uploading &amp; Analysing…</>
+                : <><span className="material-symbols-outlined">upload</span> Upload &amp; Run AI Analysis</>
+              }
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (

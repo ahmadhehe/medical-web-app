@@ -406,8 +406,15 @@ export default function PatientDetail() {
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
                       <span className="material-symbols-outlined text-slate-400">folder_open</span>
-                      Documents
+                      X-rays &amp; Documents
                     </h3>
+                    <button
+                      onClick={() => navigate(`/doctor/xray/new?patientId=${patientId}`)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-colors"
+                    >
+                      <span className="material-symbols-outlined text-[16px]">upload</span>
+                      Upload X-ray
+                    </button>
                   </div>
                   <div className="space-y-4">
                     {images.length === 0 ? (

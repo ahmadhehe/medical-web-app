@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
-import { getSchedule } from '../../services/doctor.service';
+import { getAppointments } from '../../services/appointment.service';
 
 const STATUS_BADGE = {
   pending:     { label: 'Upcoming',    cls: 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400',       dot: 'bg-slate-400' },
@@ -46,15 +46,14 @@ export default function Schedule() {
   const [weekStart,    setWeekStart]    = useState(() => startOfWeek(new Date()));
 
   useEffect(() => {
-    if (!user?.id) return;
     let alive = true;
     setLoading(true);
-    getSchedule(user.id)
-      .then((r) => { if (alive) setAppointments(Array.isArray(r.data) ? r.data : []); })
+    getAppointments({ limit: 500 })
+      .then((r) => { if (alive) setAppointments(r.data?.appointments ?? []); })
       .catch((err) => { if (alive) toast(err.response?.data?.error ?? 'Failed to load schedule', 'error'); })
       .finally(() => { if (alive) setLoading(false); });
     return () => { alive = false; };
-  }, [user?.id, toast]);
+  }, [toast]);
 
   const weekDays = Array.from({ length: 7 }, (_, i) => {
     const d = new Date(weekStart);
